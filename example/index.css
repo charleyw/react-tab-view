@@ -1,0 +1,28 @@
+.container,
+.container * {
+  box-sizing: border-box;
+}
+
+.container {
+  width: 400px;
+  height: 600px;
+  border: 1px solid #999;
+}
+
+.red,
+.blue,
+.yellow {
+  padding: 10px;
+  height: 300px;
+  width: 400px;
+}
+
+.red {
+  background-color: red;
+}
+.yellow {
+  background-color: yellow;
+}
+.blue {
+  background-color: blue;
+}
