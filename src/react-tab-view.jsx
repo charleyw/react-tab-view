@@ -48,7 +48,7 @@ export default React.createClass({
         <div className="indicator" style={indicatorStyle}></div>
         <div className="tab-content-items" style={itemsStyle}>
           {React.Children.map(this.props.children, (element, index) => {
-            return (<div style={itemStyle} className={that.getContentItemCssClasses(index)}>{element}</div>)
+            return (<div style={itemStyle} className="tab-content-item">{element}</div>)
           })}
         </div>
       </div>
