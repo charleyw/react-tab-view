@@ -40,8 +40,6 @@
 
 .tab-content-item{
   height: 100%;
-  display: none;
-}
-.tab-content-item.active{
   display: block;
+  float: left;
 }

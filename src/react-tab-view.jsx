@@ -13,20 +13,37 @@ export default React.createClass({
     return index === this.state.currentIndex ? "tab-content-item active" : "tab-content-item";
   },
 
+  getWidth(elem) {
+    return elem.getBoundingClientRect().width || elem.offsetWidth;
+  },
+
+  componentDidMount(){
+    let baseWidth = this.getWidth(this.refs.tabView);
+    this.setState({baseWidth: baseWidth});
+  },
+
   render: function(){
     let that = this;
-    let {baseWidth} = this.props;
-    let childrenLength = this.props.children.length;
+    let {baseWidth, currentIndex} = this.state;
+    let childrenLength = React.Children.count(this.props.children);
+
+    let itemsStyle = baseWidth ? {
+      width: baseWidth * childrenLength,
+      transform: `translate3d(-${baseWidth * currentIndex}px, 0, 0)`
+    } : {};
+
+    let itemStyle = baseWidth ? { width: baseWidth } : {};
+
     return (
-      <div className="react-tab-view">
+      <div ref="tabView" className="react-tab-view">
         <nav className="tab-title-items">
           {React.Children.map(this.props.children, (element, index) => {
             return (<div onClick={() => {this.setState({currentIndex: index})}} className={that.getTitleItemCssClasses(index)}>{element.props.name}</div>)
           })}
         </nav>
-        <div className="tab-content-items">
+        <div className="tab-content-items" style={itemsStyle}>
           {React.Children.map(this.props.children, (element, index) => {
-            return (<div className={that.getContentItemCssClasses(index)}>{element}</div>)
+            return (<div style={itemStyle} className={that.getContentItemCssClasses(index)}>{element}</div>)
           })}
         </div>
       </div>
