@@ -36,6 +36,7 @@
 
 .tab-content-items {
   height: 100%;
+  transition: all .2s ease;
 }
 
 .tab-content-item{
