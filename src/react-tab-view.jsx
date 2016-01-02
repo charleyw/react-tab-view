@@ -2,6 +2,12 @@ import React from 'react';
 import './react-tab-view.css';
 
 export default React.createClass({
+  propTypes: {
+    isDraggable: React.PropTypes.bool
+  },
+
+  touchState: {},
+
   getInitialState: function(){
     return {currentIndex: 0}
   },
@@ -25,21 +31,20 @@ export default React.createClass({
   swipeStart: function (e) {
     let posX = (e.touches !== undefined) ? e.touches[0].pageX : e.clientX;
     let posY = (e.touches !== undefined) ? e.touches[0].pageY : e.clientY;
-    this.setState({
+    this.touchState = {
       isDragging: true,
       startX: posX,
       startY: posY,
       curX: posX,
       curY: posY
-    });
+    };
   },
 
   swipeMove(e){
-    let {isDragging} = this.state;
     let posX = (e.touches !== undefined) ? e.touches[0].pageX : e.clientX;
     let posY = (e.touches !== undefined) ? e.touches[0].pageY : e.clientY;
 
-    isDragging && this.setState({
+    this.touchState = Object.assign(this.touchState, {
       isDragging: true,
       curX: posX,
       curY: posY
@@ -47,7 +52,8 @@ export default React.createClass({
   },
 
   swipeEnd(e){
-    let {startX, curX, startY, curY, currentIndex} = this.state;
+    let {currentIndex} = this.state;
+    let {startX, curX, startY, curY} = this.touchState;
     let threshold = (window.innerWidth / 10),
       yAxisMoved = Math.abs(startY - curY),
       xAxisMoved = Math.abs(startX - curX),
@@ -58,7 +64,7 @@ export default React.createClass({
       maxIndex = React.Children.count(this.props.children) - 1;
 
     if(isYAxisMoved || isTouchTap) {
-      this.setState({isDragging: false});
+      this.touchState = Object.assign(this.touchState, {isDragging: false});
       return;
     }
 
@@ -70,10 +76,7 @@ export default React.createClass({
       }
     }
 
-    this.setState({
-      isDragging: false,
-      currentIndex: nextIndex
-    });
+    this.setState({currentIndex: nextIndex});
   },
 
   getSwipeDirection(start, end){
@@ -107,13 +110,13 @@ export default React.createClass({
         <div className="indicator" style={indicatorStyle}></div>
         <div className="tab-content-items" style={itemsStyle}
              onMouseDown={this.swipeStart}
-             onMouseMove={isDragging ? this.swipeMove: null}
+             onMouseMove={this.swipeMove}
              onMouseUp={this.swipeEnd}
-             onMouseLeave={isDragging ? this.swipeEnd: null}
+             onMouseLeave={this.swipeEnd}
              onTouchStart={this.swipeStart}
-             onTouchMove={isDragging ? this.swipeMove: null}
+             onTouchMove={this.swipeMove}
              onTouchEnd={this.swipeEnd}
-             onTouchCancel={isDragging ? this.swipeEnd: null}>
+             onTouchCancel={this.swipeEnd}>
           {React.Children.map(this.props.children, (element, index) => {
             return (<div style={itemStyle} className="tab-content-item">{element}</div>)
           })}
