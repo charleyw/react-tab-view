@@ -7,7 +7,7 @@ import ReactTabView from '../src/react-tab-view'
 let App = React.createClass({
   render:function(){
     return (<div className="container">
-      <ReactTabView baseWidth={400}>
+      <ReactTabView>
         <div name="red">
           <div className="red">我是红色的标签页</div>
         </div>
