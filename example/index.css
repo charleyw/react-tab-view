@@ -1,11 +1,14 @@
+body {
+  margin: 0;
+}
 .container,
 .container * {
   box-sizing: border-box;
 }
 
 .container {
-  width: 400px;
-  height: 600px;
+  width: 375px;
+  height: 627px;
   border: 1px solid #999;
 }
 
@@ -14,7 +17,6 @@
 .yellow {
   padding: 10px;
   height: 300px;
-  width: 400px;
 }
 
 .red {
