@@ -33,6 +33,10 @@ export default React.createClass({
     } : {};
 
     let itemStyle = baseWidth ? { width: baseWidth } : {};
+    let indicatorStyle = baseWidth ? {
+      width: baseWidth / childrenLength,
+      transform: `translate3d(${baseWidth * currentIndex / childrenLength}px, 0, 0)`
+    } : {};
 
     return (
       <div ref="tabView" className="react-tab-view">
@@ -41,6 +45,7 @@ export default React.createClass({
             return (<div onClick={() => {this.setState({currentIndex: index})}} className={that.getTitleItemCssClasses(index)}>{element.props.name}</div>)
           })}
         </nav>
+        <div className="indicator" style={indicatorStyle}></div>
         <div className="tab-content-items" style={itemsStyle}>
           {React.Children.map(this.props.children, (element, index) => {
             return (<div style={itemStyle} className={that.getContentItemCssClasses(index)}>{element}</div>)
