@@ -7,7 +7,7 @@ import ReactTabView from '../src/react-tab-view'
 let App = React.createClass({
   render:function(){
     return (<div className="container">
-      <ReactTabView>
+      <ReactTabView isDraggable={true}>
         <div name="Red">
           <div className="red"></div>
         </div>

@@ -9,14 +9,10 @@ export default React.createClass({
   touchState: {},
 
   getInitialState: function(){
-    return {currentIndex: 0}
+    return {currentIndex: 0, baseWidth: 0}
   },
   getTitleItemCssClasses: function(index){
     return index === this.state.currentIndex ? "tab-title-item active" : "tab-title-item";
-  },
-
-  getContentItemCssClasses: function(index){
-    return index === this.state.currentIndex ? "tab-content-item active" : "tab-content-item";
   },
 
   getWidth(elem) {
@@ -29,6 +25,8 @@ export default React.createClass({
   },
 
   swipeStart: function (e) {
+    let {isDraggable} = this.props;
+    let {currentIndex, baseWidth} = this.state;
     let posX = (e.touches !== undefined) ? e.touches[0].pageX : e.clientX;
     let posY = (e.touches !== undefined) ? e.touches[0].pageY : e.clientY;
     this.touchState = {
@@ -41,6 +39,10 @@ export default React.createClass({
   },
 
   swipeMove(e){
+    if(!this.touchState.isDragging) return;
+
+    let {isDraggable} = this.props;
+    let {currentIndex, baseWidth} = this.state;
     let posX = (e.touches !== undefined) ? e.touches[0].pageX : e.clientX;
     let posY = (e.touches !== undefined) ? e.touches[0].pageY : e.clientY;
 
@@ -48,6 +50,11 @@ export default React.createClass({
       isDragging: true,
       curX: posX,
       curY: posY
+    });
+
+    isDraggable && this.setState({
+      isDragging: true,
+      currentBaseTranslate: currentIndex * baseWidth + this.touchState.startX - posX
     });
   },
 
@@ -63,8 +70,9 @@ export default React.createClass({
       nextIndex = currentIndex,
       maxIndex = React.Children.count(this.props.children) - 1;
 
+    this.touchState = Object.assign(this.touchState, {isDragging: false});
+
     if(isYAxisMoved || isTouchTap) {
-      this.touchState = Object.assign(this.touchState, {isDragging: false});
       return;
     }
 
@@ -76,7 +84,7 @@ export default React.createClass({
       }
     }
 
-    this.setState({currentIndex: nextIndex});
+    this.setState({isDragging: false, currentIndex: nextIndex});
   },
 
   getSwipeDirection(start, end){
@@ -86,18 +94,20 @@ export default React.createClass({
 
   render: function(){
     let that = this;
-    let {baseWidth, currentIndex, isDragging} = this.state;
+    let {baseWidth, currentIndex, isDragging, currentBaseTranslate} = this.state;
     let childrenLength = React.Children.count(this.props.children);
 
-    let itemsStyle = baseWidth ? {
+    let itemsStyle = !!baseWidth ? {
       width: baseWidth * childrenLength,
-      transform: `translate3d(-${baseWidth * currentIndex}px, 0, 0)`
+      transitionProperty: isDragging ? 'none' : 'all',
+      transform: `translate3d(-${isDragging ? currentBaseTranslate : baseWidth * currentIndex}px, 0, 0)`
     } : {};
 
-    let itemStyle = baseWidth ? { width: baseWidth } : {};
-    let indicatorStyle = baseWidth ? {
+    let itemStyle = !!baseWidth ? { width: baseWidth } : {};
+    let indicatorStyle = !!baseWidth ? {
       width: baseWidth / childrenLength,
-      transform: `translate3d(${baseWidth * currentIndex / childrenLength}px, 0, 0)`
+      transitionProperty: isDragging ? 'none' : 'all',
+      transform: `translate3d(${isDragging ? currentBaseTranslate / childrenLength : baseWidth * currentIndex / childrenLength}px, 0, 0)`
     } : {};
 
     return (
