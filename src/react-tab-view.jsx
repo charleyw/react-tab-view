@@ -22,9 +22,68 @@ export default React.createClass({
     this.setState({baseWidth: baseWidth});
   },
 
+  swipeStart: function (e) {
+    let posX = (e.touches !== undefined) ? e.touches[0].pageX : e.clientX;
+    let posY = (e.touches !== undefined) ? e.touches[0].pageY : e.clientY;
+    this.setState({
+      isDragging: true,
+      startX: posX,
+      startY: posY,
+      curX: posX,
+      curY: posY
+    });
+  },
+
+  swipeMove(e){
+    let {isDragging} = this.state;
+    let posX = (e.touches !== undefined) ? e.touches[0].pageX : e.clientX;
+    let posY = (e.touches !== undefined) ? e.touches[0].pageY : e.clientY;
+
+    isDragging && this.setState({
+      isDragging: true,
+      curX: posX,
+      curY: posY
+    });
+  },
+
+  swipeEnd(e){
+    let {startX, curX, startY, curY, currentIndex} = this.state;
+    let threshold = (window.innerWidth / 10),
+      yAxisMoved = Math.abs(startY - curY),
+      xAxisMoved = Math.abs(startX - curX),
+      isYAxisMoved = yAxisMoved > xAxisMoved,
+      isTouchTap = xAxisMoved < 5,
+      direction = this.getSwipeDirection(startX, curX),
+      nextIndex = currentIndex,
+      maxIndex = React.Children.count(this.props.children) - 1;
+
+    if(isYAxisMoved || isTouchTap) {
+      this.setState({isDragging: false});
+      return;
+    }
+
+    if(xAxisMoved > threshold){
+      if(direction === 'left' && currentIndex < maxIndex){
+        nextIndex = currentIndex + 1;
+      } else if(direction == 'right' && currentIndex > 0) {
+        nextIndex = currentIndex - 1;
+      }
+    }
+
+    this.setState({
+      isDragging: false,
+      currentIndex: nextIndex
+    });
+  },
+
+  getSwipeDirection(start, end){
+    if(start < end) return 'right';
+    else return 'left'
+  },
+
   render: function(){
     let that = this;
-    let {baseWidth, currentIndex} = this.state;
+    let {baseWidth, currentIndex, isDragging} = this.state;
     let childrenLength = React.Children.count(this.props.children);
 
     let itemsStyle = baseWidth ? {
@@ -46,7 +105,15 @@ export default React.createClass({
           })}
         </nav>
         <div className="indicator" style={indicatorStyle}></div>
-        <div className="tab-content-items" style={itemsStyle}>
+        <div className="tab-content-items" style={itemsStyle}
+             onMouseDown={this.swipeStart}
+             onMouseMove={isDragging ? this.swipeMove: null}
+             onMouseUp={this.swipeEnd}
+             onMouseLeave={isDragging ? this.swipeEnd: null}
+             onTouchStart={this.swipeStart}
+             onTouchMove={isDragging ? this.swipeMove: null}
+             onTouchEnd={this.swipeEnd}
+             onTouchCancel={isDragging ? this.swipeEnd: null}>
           {React.Children.map(this.props.children, (element, index) => {
             return (<div style={itemStyle} className="tab-content-item">{element}</div>)
           })}
