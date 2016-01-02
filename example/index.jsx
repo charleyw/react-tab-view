@@ -8,14 +8,14 @@ let App = React.createClass({
   render:function(){
     return (<div className="container">
       <ReactTabView>
-        <div name="red">
-          <div className="red">我是红色的标签页</div>
+        <div name="Red">
+          <div className="red"></div>
         </div>
-        <div name="blue">
-          <div className="blue">我是蓝色的标签页</div>
+        <div name="Blue">
+          <div className="blue"></div>
         </div>
-        <div name="yellow">
-          <div className="yellow">我是黄色的标签页</div>
+        <div name="Orange">
+          <div className="yellow"></div>
         </div>
       </ReactTabView>
     </div>);
