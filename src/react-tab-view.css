@@ -17,10 +17,7 @@
   height: 50px;
   padding: 0;
   table-layout: fixed;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><line x1='0' y1='100%' x2='100%' y2='100%' style='stroke:#e5e5e5;stroke-width:1'/></svg>");
-  background-repeat: no-repeat;
-  background-position: 0 0;
-
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><line x1='0' y1='100%' x2='100%' y2='100%' style='stroke:#e5e5e5;stroke-width:1'/></svg>") no-repeat 0 0;
 }
 
 .indicator {
