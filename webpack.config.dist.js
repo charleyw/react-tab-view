@@ -4,19 +4,31 @@ var path = require('path');
 
 module.exports = {
   context: path.join(__dirname),
-  entry: './src/index.jsx',
+  entry: './src/index.js',
 
   output: {
-    path: path.join(__dirname),
+    path: path.join(__dirname, 'dist'),
     filename: 'react-tab-view.js',
     libraryTarget: 'umd',
     library: 'ReactTabView'
   },
 
-  externals: {
-   'react': 'var React',
-   'react/addons': 'var React'
-  },
+  externals: [
+    {
+      'react': {
+        root: 'React',
+        commonjs2: 'react',
+        commonjs: 'react',
+        amd: 'react'
+      },
+      'react-dom': {
+        root: 'ReactDOM',
+        commonjs2: 'react-dom',
+        commonjs: 'react-dom',
+        amd: 'react-dom'
+      }
+    }
+  ],
 
   module: {
     loaders: [
