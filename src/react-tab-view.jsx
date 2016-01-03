@@ -25,8 +25,6 @@ export default React.createClass({
   },
 
   swipeStart: function (e) {
-    let {isDraggable} = this.props;
-    let {currentIndex, baseWidth} = this.state;
     let posX = (e.touches !== undefined) ? e.touches[0].pageX : e.clientX;
     let posY = (e.touches !== undefined) ? e.touches[0].pageY : e.clientY;
     this.touchState = {
@@ -43,18 +41,34 @@ export default React.createClass({
 
     let {isDraggable} = this.props;
     let {currentIndex, baseWidth} = this.state;
+    let {startX, startY, isSwiping, isScrolling} = this.touchState;
     let posX = (e.touches !== undefined) ? e.touches[0].pageX : e.clientX;
     let posY = (e.touches !== undefined) ? e.touches[0].pageY : e.clientY;
+    let yAxisMoved = Math.abs(startY - posY);
+    let xAxisMoved = Math.abs(startX - posX);
+
+    if(!isSwiping && !isScrolling){
+      if(xAxisMoved > 7){
+        isSwiping = true;
+      } else if(yAxisMoved > 10){
+        isScrolling = true;
+      }
+    }
+
+    if(isSwiping){
+      e.preventDefault();
+      isDraggable && this.setState({
+        isDragging: true,
+        currentBaseTranslate: currentIndex * baseWidth + this.touchState.startX - posX
+      });
+    }
 
     this.touchState = Object.assign(this.touchState, {
+      isScrolling: isScrolling,
+      isSwiping: isSwiping,
       isDragging: true,
       curX: posX,
       curY: posY
-    });
-
-    isDraggable && this.setState({
-      isDragging: true,
-      currentBaseTranslate: currentIndex * baseWidth + this.touchState.startX - posX
     });
   },
 
@@ -70,7 +84,7 @@ export default React.createClass({
       nextIndex = currentIndex,
       maxIndex = React.Children.count(this.props.children) - 1;
 
-    this.touchState = Object.assign(this.touchState, {isDragging: false});
+    this.touchState = Object.assign(this.touchState, {isDragging: false, isSwiping: false, isScrolling: false});
 
     if(isYAxisMoved || isTouchTap) {
       return;
