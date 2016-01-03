@@ -8,7 +8,7 @@ let App = React.createClass({
   render:function(){
     return (<div className="container">
       <ReactTabView isDraggable={true}>
-        <div name="React">
+        <div name="REACT">
           <div className="red">
             Why React?
           </div>
@@ -21,11 +21,15 @@ let App = React.createClass({
           <h2>Build Composable Components</h2>
           <p className="content-padded">React is all about building reusable components. In fact, with React the only thing you do is build components. Since they're so encapsulated, components make code reuse, testing, and separation of concerns easy.</p>
         </div>
-        <div name="VIRTUAL DOM">
-          <div className="blue"></div>
+        <div name="JSX">
+          <div className="blue">JSX Syntax</div>
+          <p className="content-padded">We strongly believe that components are the right way to separate concerns rather than "templates" and "display logic." We think that markup and the code that generates it are intimately tied together. Additionally, display logic is often very complex and using template languages to express it becomes cumbersome.</p>
+          <p className="content-padded">We've found that the best solution for this problem is to generate HTML and component trees directly from the JavaScript code such that you can use all of the expressive power of a real programming language to build UIs.</p>
+          <p className="content-padded">In order to make this easier, we've added a very simple, optional HTML-like syntax to create these React tree nodes.</p>
         </div>
-        <div name="DATA FLOW">
-          <div className="yellow"></div>
+        <div name="FLUX">
+          <div className="yellow">Overview</div>
+          <p className="content-padded">Flux is the application architecture that Facebook uses for building client-side web applications. It complements React's composable view components by utilizing a unidirectional data flow. It's more of a pattern rather than a formal framework, and you can start using Flux immediately without a lot of new code.</p>
         </div>
       </ReactTabView>
     </div>);

@@ -29,20 +29,22 @@ p.content-padded {
   padding: 10px;
   overflow-y: scroll;
 }
-
-.red {
-  background-color: #e74c3c;
+.red,
+.blue,
+.yellow {
   height: 100px;
   line-height: 100px;
   text-align: center;
   color: #fff;
   font-size: 30px;
 }
+
+.red {
+  background-color: #e74c3c;
+}
 .yellow {
   background-color: #f39c12;
-  height: 900px;
 }
 .blue {
   background-color: #2980b9;
-  height: 100%;
 }
