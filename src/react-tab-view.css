@@ -7,6 +7,7 @@
   height: 100%;
   padding-top: 50px;
   position: relative;
+  overflow: hidden;
 }
 
 .tab-title-items {
