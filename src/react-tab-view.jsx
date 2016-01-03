@@ -87,31 +87,25 @@ export default React.createClass({
 
   swipeEnd(e){
     let {currentIndex} = this.state;
-    let {startX, curX, startY, curY} = this.touchState;
-    let threshold = (window.innerWidth / 10),
-      yAxisMoved = Math.abs(startY - curY),
+    let {startX, curX, isSwiping} = this.touchState;
+    let threshold = 20,
       xAxisMoved = Math.abs(startX - curX),
-      isYAxisMoved = yAxisMoved > xAxisMoved,
-      isTouchTap = xAxisMoved < 5,
       direction = this.getSwipeDirection(startX, curX),
       nextIndex = currentIndex,
       maxIndex = React.Children.count(this.props.children) - 1;
 
-    this.touchState = Object.assign(this.touchState, {isDragging: false, isSwiping: false, isScrolling: false});
-
-    if(isYAxisMoved || isTouchTap) {
-      return;
-    }
-
-    if(xAxisMoved > threshold){
-      if(direction === 'left' && currentIndex < maxIndex){
-        nextIndex = currentIndex + 1;
-      } else if(direction == 'right' && currentIndex > 0) {
-        nextIndex = currentIndex - 1;
+    if(isSwiping){
+      if(xAxisMoved > threshold){
+        if(direction === 'left' && currentIndex < maxIndex){
+          nextIndex = currentIndex + 1;
+        } else if(direction == 'right' && currentIndex > 0) {
+          nextIndex = currentIndex - 1;
+        }
       }
     }
 
     this.setState({isDragging: false, currentIndex: nextIndex});
+    this.touchState = Object.assign(this.touchState, {isDragging: false, isSwiping: false, isScrolling: false});
   },
 
   getSwipeDirection(start, end){
