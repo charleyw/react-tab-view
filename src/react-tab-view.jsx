@@ -11,6 +11,7 @@ export default React.createClass({
   getInitialState: function(){
     return {currentIndex: 0, baseWidth: 0}
   },
+
   getTitleItemCssClasses: function(index){
     return index === this.state.currentIndex ? "tab-title-item active" : "tab-title-item";
   },
@@ -22,6 +23,18 @@ export default React.createClass({
   componentDidMount(){
     let baseWidth = this.getWidth(this.refs.tabView);
     this.setState({baseWidth: baseWidth});
+    this.adaptHeight();
+  },
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.currentIndex !== this.state.currentIndex){
+      this.adaptHeight();
+    }
+  },
+
+  adaptHeight(){
+    let { currentIndex } = this.state;
+    this.refs.tabItems.style.height = this.refs[`tab-item-${currentIndex}`].offsetHeight + 'px';
   },
 
   swipeStart: function (e) {
@@ -132,7 +145,7 @@ export default React.createClass({
           })}
         </nav>
         <div className="indicator" style={indicatorStyle}></div>
-        <div className="tab-content-items" style={itemsStyle}
+        <div ref="tabItems" className="tab-content-items" style={itemsStyle}
              onMouseDown={this.swipeStart}
              onMouseMove={this.swipeMove}
              onMouseUp={this.swipeEnd}
@@ -142,7 +155,7 @@ export default React.createClass({
              onTouchEnd={this.swipeEnd}
              onTouchCancel={this.swipeEnd}>
           {React.Children.map(this.props.children, (element, index) => {
-            return (<div style={itemStyle} className="tab-content-item">{element}</div>)
+            return (<div ref={`tab-item-${index}`} style={itemStyle} className="tab-content-item">{element}</div>)
           })}
         </div>
       </div>
