@@ -1,5 +1,17 @@
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
+  line-height: 1.6;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+p{
+  color: #999;
+  margin: 0;
+}
+p.content-padded {
+  padding: 10px;
 }
 .container,
 .container * {
@@ -12,19 +24,25 @@ body {
   border: 1px solid #999;
 }
 
-.red,
-.blue,
-.yellow {
-  margin: 10px;
-  height: 300px;
+.tab-content-item > div{
+  height: 100%;
+  padding: 10px;
+  overflow-y: scroll;
 }
 
 .red {
   background-color: #e74c3c;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  color: #fff;
+  font-size: 30px;
 }
 .yellow {
   background-color: #f39c12;
+  height: 900px;
 }
 .blue {
   background-color: #2980b9;
+  height: 100%;
 }
