@@ -121,14 +121,18 @@ export default React.createClass({
     let itemsStyle = !!baseWidth ? {
       width: baseWidth * childrenLength,
       transitionProperty: isDragging ? 'none' : 'all',
-      transform: `translate3d(-${isDragging ? currentBaseTranslate : baseWidth * currentIndex}px, 0, 0)`
+      WebkitTransitionProperty: isDragging ? 'none' : 'all',
+      transform: `translate3d(-${isDragging ? currentBaseTranslate : baseWidth * currentIndex}px, 0, 0)`,
+      WebkitTransform: `translate3d(-${isDragging ? currentBaseTranslate : baseWidth * currentIndex}px, 0, 0)`
     } : {};
 
     let itemStyle = !!baseWidth ? { width: baseWidth } : {};
     let indicatorStyle = !!baseWidth ? {
       width: baseWidth / childrenLength,
       transitionProperty: isDragging ? 'none' : 'all',
-      transform: `translate3d(${isDragging ? currentBaseTranslate / childrenLength : baseWidth * currentIndex / childrenLength}px, 0, 0)`
+      WebkitTransitionProperty: isDragging ? 'none' : 'all',
+      transform: `translate3d(${isDragging ? currentBaseTranslate / childrenLength : baseWidth * currentIndex / childrenLength}px, 0, 0)`,
+      WebkitTransform: `translate3d(${isDragging ? currentBaseTranslate / childrenLength : baseWidth * currentIndex / childrenLength}px, 0, 0)`
     } : {};
 
     return (

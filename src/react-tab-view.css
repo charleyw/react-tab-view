@@ -27,6 +27,7 @@
   background-color: #c0392b;
   top: 47px;
   transition: all .2s ease;
+  -webkit-transition: all .2s ease;
 }
 
 .tab-title-item {
@@ -45,6 +46,7 @@
 .tab-content-items {
   height: 100%;
   transition: all .2s ease;
+  -webkit-transition: all .2s ease;
 }
 
 .tab-content-item{
